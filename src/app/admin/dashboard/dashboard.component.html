@@ -1,0 +1,118 @@
+<!-- <div class="container py-5">
+    <div class="row">
+        <div class="col-12 col-md-10 col-lg-8 col-xl-6 mx-auto">
+            <div class="bg-white shadow rounded p-4">
+                <h1 class="display-6 text-dark">Crée une annonce</h1>
+                <hr class="bg-dark mb-5">
+                <form #offerForm="ngForm" (ngSubmit)="onsubmitofferform(offerForm)">
+                    <div class="form-group mb-3">
+                        <label for="offertitleInput">Tiltre</label>
+                        <input type="text" id="offertitleInput" class="form-control" name="title" ngModel>
+                    </div>
+                    <div class="form-group mb-3">
+                        <label for="offerbrandInput">Marque</label>
+                        <input type="text" id="offerbrandInput" class="form-control" name="brand" ngModel>
+                    </div>
+                    <div class="form-group mb-3">
+                        <label for="offermodelInput">model</label>
+                        <input type="text" id="offermodelInput" class="form-control" name="model" ngModel>
+                    </div>
+                    <div class="form-group mb-3">
+                        <label for="offerdescriptionInput">description</label>
+                        <textarea id="offerdescriptionInput" class="w-100 form-control" rows="5" name="description" ngModel></textarea>
+                    </div>
+                    <div class="form-group mb-3">
+                        <label for="offerpriceInput">prix</label>
+                        <input type="text" id="offerpriceInput" class="form-control" name="price" ngModel>
+                    </div>
+                    <div class="d-flex">
+                        <button class="btn btn-success mx-auto" type="submit">Enregistrer</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+ -->
+
+<div class="container py-5">
+    <div class="row">
+        <div class="col-12 col-md-10 col-lg-8 col-xl-6 mx-auto">
+            <div class="bg-white shadow rounded p-4">
+                <h1 class="display-6 text-dark">Crée une annonce</h1>
+                <hr class="bg-dark mb-5">
+                <form [formGroup]="offerFrom" (ngSubmit)="onsubmitofferform()">
+                    <input type="text" formControlName="id" hidden>
+                    <div class="form-group mb-3">
+                        <label for="offertitleInput">Tiltre</label>
+                        <input type="text" id="offertitleInput" class="form-control" formControlName="title">
+                    </div>
+                    <div class="px-3" *ngIf="currentofferphotourl && currentofferphotourl !== ''">
+                        <img [src]="currentofferphotourl" alt="offer photo" class="w-100 rounded">
+                    </div>
+                    <div class="mb-3">
+                        <label for="offerphoto" class="form-label">choisir photo</label>
+                        <input type="file" id="offerphoto" class="form-control" formControlName="photo" (change)="onchangephoto($event)">
+                    </div>
+                    <div class="form-group mb-3">
+                        <label for="offerbrandInput">Marque</label>
+                        <input type="text" id="offerbrandInput" class="form-control" formControlName="brand" appUppercaseInput>
+                    </div>
+                    <div class="form-group mb-3">
+                        <label for="offermodelInput">model</label>
+                        <input type="text" id="offermodelInput" class="form-control" formControlName="model">
+                    </div>
+                    <div class="form-group mb-3">
+                        <label for="offerdescriptionInput">description</label>
+                        <textarea id="offerdescriptionInput" class="w-100 form-control" rows="5" formControlName="description"></textarea>
+                    </div>
+                    <div class="form-group mb-3">
+                        <label for="offerpriceInput">prix</label>
+                        <input type="number" id="offerpriceInput" class="form-control" formControlName="price">
+                    </div>
+                    <div class="d-flex">
+                        <button class="btn btn-success mx-auto" type="submit" [disabled]="offerFrom.invalid">Enregistrer</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-12 col-lg-8 mx-auto">
+        <div class="bg-white shadow p-4 rounded">
+            <h1 class="display-6 text-dark">Annonces Enregistrer</h1>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col">#</th>
+                        <th>photo</th>
+                        <th scope="col">titre</th>
+                        <th scope="col">Voiture</th>
+                        <th scope="col">Prix</th>
+                        <th>Action</th>
+                        <th>Delete </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let offer of offers; let i = index">
+                        <th>{{ i }}</th>
+                        <th>
+                            <img *ngIf="offer.photo" [src]="offer.photo | safeUrl" alt="offer photo" width="90">
+                        </th>
+                        <td>{{offer.title | firstCharUppercase }}</td>
+                        <td>{{offer.brand + ' ' + offer.model }}</td>
+                        <td>{{offer.price | currency:'EUR':'symbol':'4.2-2':'fr'}}</td>
+                        <td>
+                            <button class="btn btn-primary" type="button" (click)="oneditoffer(offer)">Modifier</button>
+                            <button class="btn btn-danger" type="button" (click)="ondelete(offer.id)">Supprimer</button>
+
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+        </div>
+    </div>
+</div>
